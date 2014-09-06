@@ -173,6 +173,7 @@ def aggregate():
 
                 #Get the highest profit route
                 for res in out['result']:
+                    print res
                     profit = highSellPrice-res['avgBuy']
                     if profit>highProfit:
                         #highProfit = profit
