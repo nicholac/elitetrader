@@ -156,7 +156,7 @@ def aggregate():
                               {"$sort":{"avgSell":-1}}])
 
         if highSellOut['result']!=[]:
-            #print highSellOut
+            print highSellOut
 
             #get system name and sell price for highest
             highSysName = highSellOut['result'][0]['_id']
@@ -181,7 +181,9 @@ def aggregate():
                         lowBuySys = res['_id']
                 #print lowBuyPrice, highSellPrice, highProfit, profit
                 highProfit = highSellPrice-lowBuyPrice
-                print lowBuyPrice, highSellPrice, lowBuySys
+                #if some fail on the buy/sell prices then skip
+                if highProfit == 0:
+                    continue
                 #Find distance between these routes
                 #print lowBuySys
                 f = distColl.find({"fromSys":lowBuySys[0:lowBuySys.find(' (')]})
