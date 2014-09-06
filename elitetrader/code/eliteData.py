@@ -21,7 +21,8 @@ def main():
     coll = db.emd
     #load in the system data
     systems = []
-    fh = open(r'/Users/dusted-ipro/Documents/elitesystems.txt', 'r')
+    #fh = open(r'/Users/dusted-ipro/Documents/elitesystems.txt', 'r')
+    fh = open('elitesystems.txt', 'r')
     for line in fh.readlines():
         out = line.rstrip('\n').split(',')
         systems.append(out)

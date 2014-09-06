@@ -156,7 +156,7 @@ def aggregate():
                               {"$sort":{"avgSell":-1}}])
 
         if highSellOut['result']!=[]:
-            #print highSellOut
+            print highSellOut
 
             #get system name and sell price for highest
             highSysName = highSellOut['result'][0]['_id']
