@@ -179,7 +179,7 @@ def aggregate():
                         #highProfit = profit
                         lowBuyPrice = res['avgBuy']
                         lowBuySys = res['_id']
-                #print lowBuyPrice, highSellPrice, highProfit, profit
+                print lowBuyPrice, highSellPrice, highProfit, profit
                 highProfit = highSellPrice-lowBuyPrice
                 #if some fail on the buy/sell prices then skip
                 if highProfit == 0:
