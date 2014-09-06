@@ -182,7 +182,7 @@ def aggregate():
                 print lowBuyPrice, highSellPrice, highProfit, profit
                 highProfit = highSellPrice-lowBuyPrice
                 #if some fail on the buy/sell prices then skip
-                if highProfit == 0:
+                if profit <=0:
                     continue
                 #Find distance between these routes
                 #print lowBuySys
