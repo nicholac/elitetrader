@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+
+    <!-- Page Metadata -->
+    <meta charset="utf-8">
+    <title>&middot; Elite Trader Prototype &middot; {% block title_extra %} {% endblock %}</title>
+    <!--<link href="/static/images/favicon.ico" rel="icon" type="image/x-icon" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Elite Dangerous Trader Helper"/>
+    <meta name="keywords" content="" />
+    <meta name="author" content=""/>
+
+    <!-- Styles -->
+    <link href="/static/bootstrap/css/bootstrap.css" 			rel="stylesheet"/>
+    <link href="/static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="/static/css/extras.css" 						rel="stylesheet"/>
+
+
+    <!--[if IE 6]>
+    	<link href="/static/Bootstrap-IE6-master/ie6.min.css" rel="stylesheet"/>
+	<![endif]-->
+
+    <style type="text/css">
+
+      #map { height: 400px; }
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+        }
+    </style>
+
+
+	{% block extra_styles %}
+
+	{% endblock %}
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png"/>
+    <link rel="shortcut icon" href="/static/ico/favicon.png"/>
+
+  	<!--  Scripts  -->
+  	<script src="/static/js/jquery.js"></script>
+  	{% block extra_js %}
+  	{% endblock %}
+
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+
+    <div class="navbar navbar-inverse navbar-fixed-top center">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+
+		  <!-- Left Navigation bar links
+   		       ==================================  -->
+          <ul class="nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/">Home</a></li>
+                </ul>
+            </li>
+          	{% block nav_items_left %}
+            {% endblock %}
+          </ul>
+
+
+		  <!-- Centre Nav Bar Title
+   		       ==================================
+			<ul class="nav" style="margin-left:20%;">
+				<li class="nav-classification">
+					<p style="margin:0px 0px">
+					{% block classification_head %}
+						unclassified
+					{% endblock classification_head %}
+					</p>
+
+				</li>
+			</ul>
+		-->
+
+		  <!-- Right Navigation bar links
+   		       ==================================
+          <ul class="nav pull-right">
+
+              <li class="dropdown">
+              	<a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+					<li> <a href="/docs/prototypes">	Prototypes	</a></li>
+					<li class="divider"></li>
+					<li> <a href="/docs/sources">		Dstl		</a></li>
+                </ul>
+              </li>
+           </ul>
+           -->
+
+              {% block nav_items_right %}
+              {% endblock %}
+
+
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+
+    <div style="margin: 40px auto"></div>
+
+	{% block top_row %}
+    {% endblock top_row %}
+
+	{% block main_block %}
+
+    {% endblock main_block %}
+
+	{% block bottom_row %}
+    {% endblock bottom_row %}
+
+    <!-- Footer
+    ================================================== -->
+
+    <footer class="footer">
+      <div class="container">
+        <p>Prototype Only </p>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li class="muted">&middot;</li>
+          <li><a href="#">Frontier Home</a></li>
+          <li class="muted">&middot;</li>
+          <li><a href="#">License</a></li>
+        </ul>
+      </div>
+    </footer>
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+
+	{% block tail_js %}
+
+	{% endblock %}
+
+  </body>
+</html>
