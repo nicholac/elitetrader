@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block classification_head %} {{ classification|upper }} {% endblock classification_head %}
+
+{% block top_row %}
+	<div class="row-fluid">
+		<div class="span8 offset5">
+			<h3>Elite Trader</h3>
+		</div>
+		<!--
+		<div class="span2 offset2">
+			<h5>Terrain 2D Profile:</h5>
+		</div>
+		<div class="span2 offset3">
+			<h5>Shot Details::</h5>
+		</div>
+		-->
+	</div>
+
+{% endblock top_row %}
+
+{% block main_block %}
+<div class="row-fluid">
+		<div class="span4 offset5">
+				<ul class="unstyled">
+					<h6>Last Run Time: {{ procDTG|safe }}</h6>
+				</ul>
+		</div>
+</div>
+	<div class="row-fluid">
+		<div class="span6 offset1">
+			<h5>Highest Profit Commodities (weighted by distance - higher score more profit):</h5>
+		    <div id="chart"></div>
+		    <script src="http://d3js.org/d3.v2.min.js"></script>
+		    <script>
+				function renderChart() {
+
+				//var data = d3.csv.parse(d3.select('#csv').text());
+				var data = {{ allOutput|safe }};
+				var valueLabelWidth = 60; // space reserved for value labels (right)
+				var barHeight = 20; // height of one bar
+				var barLabelWidth = 170; // space reserved for bar labels
+				var barLabelPadding = 5; // padding between bar and bar labels (left)
+				var gridLabelHeight = 18; // space reserved for gridline labels
+				var gridChartOffset = 3; // space between start of grid and first bar
+				var maxBarWidth = 420; // width of the bar with the max value
+
+				// accessor functions
+				var barLabel = function(d) { return d['commodity']; };
+				var barValue = function(d) { return parseFloat(d['score']); };
+
+				// sorting
+				var sortedData = data.sort(function(a, b) {
+				 return d3.descending(barValue(a), barValue(b));
+				});
+
+				// scales
+				var yScale = d3.scale.ordinal().domain(d3.range(0, data.length)).rangeBands([0, data.length * barHeight]);
+				var y = function(d, i) { return yScale(i); };
+				var yText = function(d, i) { return y(d, i) + yScale.rangeBand() / 2; };
+				var x = d3.scale.linear().domain([0, d3.max(data, barValue)]).range([0, maxBarWidth]);
+				// svg container element
+				var chart = d3.select('#chart').append("svg")
+				  .attr('width', maxBarWidth + barLabelWidth + valueLabelWidth)
+				  .attr('height', gridLabelHeight + gridChartOffset + data.length * barHeight);
+				// grid line labels
+				var gridContainer = chart.append('g')
+				  .attr('transform', 'translate(' + barLabelWidth + ',' + gridLabelHeight + ')');
+				gridContainer.selectAll("text").data(x.ticks(10)).enter().append("text")
+				  .attr("x", x)
+				  .attr("dy", -3)
+				  .attr("text-anchor", "middle")
+				  .text(String);
+				// vertical grid lines
+				gridContainer.selectAll("line").data(x.ticks(10)).enter().append("line")
+				  .attr("x1", x)
+				  .attr("x2", x)
+				  .attr("y1", 0)
+				  .attr("y2", yScale.rangeExtent()[1] + gridChartOffset)
+				  .style("stroke", "#ccc");
+				// bar labels
+				var labelsContainer = chart.append('g')
+				  .attr('transform', 'translate(' + (barLabelWidth - barLabelPadding) + ',' + (gridLabelHeight + gridChartOffset) + ')');
+				labelsContainer.selectAll('text').data(data).enter().append('text')
+				  .attr('y', yText)
+				  .attr('stroke', 'none')
+				  .attr('fill', 'black')
+				  .attr("dy", ".35em") // vertical-align: middle
+				  .attr('text-anchor', 'end')
+				  .text(barLabel);
+				// bars
+				var barsContainer = chart.append('g')
+				  .attr('transform', 'translate(' + barLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')');
+				barsContainer.selectAll("rect").data(data).enter().append("rect")
+				  .attr('y', y)
+				  .attr('height', yScale.rangeBand())
+				  .attr('width', function(d) { return x(barValue(d)); })
+				  .attr('stroke', 'white')
+				  .attr('fill', 'steelblue');
+				// bar value labels
+				barsContainer.selectAll("text").data(data).enter().append("text")
+				  .attr("x", function(d) { return x(barValue(d)); })
+				  .attr("y", yText)
+				  .attr("dx", 3) // padding-left
+				  .attr("dy", ".35em") // vertical-align: middle
+				  .attr("text-anchor", "start") // text-align: right
+				  .attr("fill", "black")
+				  .attr("stroke", "none")
+				  .text(function(d) { return d3.round(barValue(d), 2); });
+				// start line
+				barsContainer.append("line")
+				  .attr("y1", -gridChartOffset)
+				  .attr("y2", yScale.rangeExtent()[1] + gridChartOffset)
+				  .style("stroke", "#000");
+
+				}
+				    </script>
+		    	<script>renderChart();</script>
+		    </div>
+		<div class="span4 offset0">
+			<h5>Highest Profit Routes (by commodity):</h5>
+                <table class="table table-hover table-condensed text-center">
+                    <thead>
+                        <tr>
+                        	 <th> Commodity </th>
+                             <th> From Sys </th>
+                             <th> To Sys </th>
+                             <th> Distance (ly direct) </th>
+                             <th> Profit </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for row in tableData%}
+                            <tr>
+                                {%for cell in row%}
+                                    <td>{{cell}}</td>
+                                {% endfor %}
+                            </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+		</div>
+		</div>
+	</div>
+
+			<script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+
+
+{% endblock main_block %}
