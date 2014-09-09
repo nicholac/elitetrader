@@ -34,7 +34,7 @@ import zmq
 # You can substitute the stdlib's json module, if that suits your fancy
 import simplejson
 from pymongo import MongoClient
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from datetime import datetime
 from operator import itemgetter
 from math import sqrt
@@ -250,8 +250,8 @@ def graphing():
 if __name__ == '__main__':
     #main()
     #silverTrade()
-    #aggregate()
-    graphing()
+    aggregate()
+    #graphing()
     #computeDistMatrix()
     '''Other Ideas:
     do distance matrix in numpy
