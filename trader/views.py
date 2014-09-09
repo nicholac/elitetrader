@@ -4,10 +4,7 @@ from pymongo import MongoClient
 #from django.utils import simplejson
 from operator import itemgetter
 import simplejson
-<<<<<<< HEAD
 
-=======
->>>>>>> 4b8b169c19ff96621f2facb1230ccf17cc9cd0fa
 # Create your views here.
 
 
