@@ -1,9 +1,9 @@
 
 from django.shortcuts import render, render_to_response
 from pymongo import MongoClient
-from django.utils import simplejson
+#from django.utils import simplejson
 from operator import itemgetter
-
+import simplejson
 # Create your views here.
 
 
