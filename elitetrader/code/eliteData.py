@@ -12,6 +12,7 @@ import simplejson
 from pymongo import MongoClient
 #import matplotlib.pyplot as plt
 from datetime import datetime
+from py2neo import neo4j, node, rel
 
 def main():
     context = zmq.Context()
@@ -61,5 +62,86 @@ def main():
         print i
     client.disconnect()
 
+def neoLoad():
+    '''Loads systems data  from mongo to Neo
+    delete all neo data:
+    MATCH (n)
+    OPTIONAL MATCH (n)-[r]-()
+    DELETE n,r
+
+    alice, bob, rel = graph_db.create(
+    {"name": "Alice"}, {"name": "Bob"},
+    (0, "KNOWS", 1, {"since": 2006})
+    )
+
+    query = neo4j.CypherQuery(graph_db, qs)
+    results = query.execute(name='Rahul')
+    print results
+
+    #Create an index
+    index = graph_db.get_or_create_index(neo4j.Node, "index_name")
+    #Create a new node
+    new_node = batch.create(node({"key":"value"}))
+    #Add it to the index
+    batch.add_indexed_node(index, "key", "value", new_node)
+    #Find our node like this
+    new_node_ref = index.get("key", "value")
+    '''
+    #Init mongo
+    client = MongoClient()
+    db = client.mydb
+    coll = db.emd_dists
+
+    #Init the neo db
+    graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
+
+    #Get the data from mongo
+    data = coll.find()
+    nodeCnt1 = 0
+    nodeCnt2 = 1
+    sysNodes = []
+    #Firstly build all system nodes & store in a dictionary for later use
+    s = coll.find_one()
+    systemNames = []
+    for system in s['toSys']:
+        #sysNode = graph_db.create(node({"sysName": system}))
+        qs = 'CREATE (n:system { name : {name} })'
+        query = neo4j.CypherQuery(graph_db, qs)
+        results = query.execute(name=system)
+        #append our system names
+        systemNames.append(system)
+
+    #Now run through systems, query neo for fromNode, query mongo for system dests and insert relationship
+    for sys in systemNames:
+        print 'Doing: '+sys
+        #Neo Query
+        q ='MATCH (m:system {name:\"'+sys+'\"}) RETURN (m)'
+        query = neo4j.CypherQuery(graph_db, q)
+        neoOut = query.execute()
+        fromSysNode = neoOut.data[0][0]
+        #Mongo Query
+        data = coll.find({'fromSys':sys})
+        toSysDists = data.next()
+        #Loop through the connections and build relationships
+        for toSys in toSysDists['toSys'].items():
+            print 'Building: '+toSys[0]
+            #get the to node
+            q ='MATCH (m:system {name:\"'+toSys[0]+'\"}) RETURN (m)'
+            query = neo4j.CypherQuery(graph_db, q)
+            neoOut = query.execute()
+            toSysNode = neoOut.data[0][0]
+            #Make relationship
+            r = graph_db.create(rel(fromSysNode, 'jump', toSysNode, {'range':toSys[1]}))
+
+    print 'Done'
+
+    client.disconnect()
+    del graph_db
+
+    return
+
+
+
 if __name__ == '__main__':
-    main()
+    #main()
+    neoLoad()

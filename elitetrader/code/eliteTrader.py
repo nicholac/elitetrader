@@ -247,6 +247,8 @@ def graphing():
 
 
 
+
+
 if __name__ == '__main__':
     #main()
     #silverTrade()
